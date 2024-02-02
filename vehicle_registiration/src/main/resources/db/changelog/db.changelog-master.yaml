@@ -1,0 +1,294 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_vehicle_sequence
+      author: yourname
+      changes:
+        - createSequence:
+            sequenceName: vehicle_id_seq
+            startValue: 1
+            incrementBy: 1
+  - changeSet:
+      id: 1
+      author: yourname
+      changes:
+        - createTable:
+            tableName: groups
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: company_id
+                  type: bigint
+              - column:
+                  name: parent_group_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_parent_group
+                    references: groups(id)
+
+  - changeSet:
+      id: 2
+      author: yourname
+      changes:
+        - createTable:
+            tableName: vehicles
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: license_plate
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: chassis_number
+                  type: varchar(255)
+              - column:
+                  name: company_id
+                  type: bigint
+              - column:
+                  name: tag
+                  type: varchar(255)
+              - column:
+                  name: brand
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: model
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: model_year
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: group_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_group
+                    references: groups(id)
+  - changeSet:
+      id: add_foreign_key_to_vehicles_for_group
+      author: yourname
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: vehicles
+            baseColumnNames: group_id
+            constraintName: fk_vehicle_group
+            referencedTableName: groups
+            referencedColumnNames: id
+
+
+  - changeSet:
+      id: 4
+      author: yourname
+      changes:
+        - insert:
+            tableName: groups
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 1
+              - column:
+                  name: name
+                  value: "İstanbul Filo"
+              - column:
+                  name: company_id
+                  valueNumeric: 8579
+        - insert:
+            tableName: groups
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 2
+              - column:
+                  name: name
+                  value: "Ankara Filo"
+              - column:
+                  name: company_id
+                  valueNumeric: 1111
+
+        - insert:
+            tableName: groups
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 3
+              - column:
+                  name: name
+                  value: "Yenimahalle Grubu"
+              - column:
+                  name: company_id
+                  valueNumeric: 1111
+              - column:
+                  name: parent_group_id
+                  valueNumeric: 2
+        - insert:
+            tableName: groups
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 4
+              - column:
+                  name: name
+                  value: "Kadıköy Grubu"
+              - column:
+                  name: company_id
+                  valueNumeric: 8579
+              - column:
+                  name: parent_group_id
+                  valueNumeric: 1
+
+  - changeSet:
+      id: 5
+      author: yourname
+      changes:
+        - insert:
+            tableName: vehicles
+            columns:
+              - column:
+                  name: license_plate
+                  value: "34ABC123"
+              - column:
+                  name: brand
+                  value: "Toyota"
+              - column:
+                  name: model
+                  value: "Corolla"
+              - column:
+                  name: model_year
+                  valueNumeric: 2020
+              - column:
+                  name: company_id
+                  valueNumeric: 1001
+              - column:
+                  name: chassis_number
+                  value: "1HGBH41JXMN109186"
+              - column:
+                  name: tag
+                  value: "Sedan"
+              - column:
+                  name: group_id
+                  valueNumeric: 1
+        - insert:
+            tableName: vehicles
+            columns:
+              - column:
+                  name: license_plate
+                  value: "06XYZ789"
+              - column:
+                  name: brand
+                  value: "Ford"
+              - column:
+                  name: model
+                  value: "Focus"
+              - column:
+                  name: model_year
+                  valueNumeric: 2019
+              - column:
+                  name: company_id
+                  valueNumeric: 8579
+              - column:
+                  name: chassis_number
+                  value: "2FMDK3GC4BBB12345"
+              - column:
+                  name: tag
+                  value: "Hatchback"
+              - column:
+                  name: group_id
+                  valueNumeric: 2
+        - insert:
+            tableName: vehicles
+            columns:
+              - column:
+                  name: license_plate
+                  value: "06XYZ789"
+              - column:
+                  name: brand
+                  value: "Ford"
+              - column:
+                  name: model
+                  value: "Focus"
+              - column:
+                  name: model_year
+                  valueNumeric: 2019
+              - column:
+                  name: company_id
+                  valueNumeric: 8579
+              - column:
+                  name: chassis_number
+                  value: "2FMDK3GC4BBB12345"
+              - column:
+                  name: tag
+                  value: "Hatchback"
+              - column:
+                  name: group_id
+                  valueNumeric: 1
+
+  - changeSet:
+      id: 7
+      author: yourname
+      changes:
+        - createTable:
+            tableName: user_vehicle
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: bigint
+              - column:
+                  name: vehicle_id
+                  type: bigint
+  - changeSet:
+      id: 8
+      author: yourname
+      changes:
+        - insert:
+            tableName: user_vehicle
+            columns:
+              - column:
+                  name: user_id
+                  valueNumeric: 1547
+              - column:
+                  name: vehicle_id
+                  valueNumeric: 1
+        - insert:
+            tableName: user_vehicle
+            columns:
+              - column:
+                  name: user_id
+                  valueNumeric: 2
+              - column:
+                  name: vehicle_id
+                  valueNumeric: 2
+        - insert:
+            tableName: user_vehicle
+            columns:
+              - column:
+                  name: user_id
+                  valueNumeric: 1547
+              - column:
+                  name: vehicle_id
+                  valueNumeric: 2
